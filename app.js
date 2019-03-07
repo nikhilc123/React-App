@@ -9,10 +9,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Todo = function (_React$Component) {
     _inherits(Todo, _React$Component);
 
-    function Todo() {
+    function Todo(props) {
         _classCallCheck(this, Todo);
 
-        return _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).apply(this, arguments));
+        // or conditon to check if its string true or regular true
+        var _this = _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).call(this, props));
+        // super is important otherwise you cannot use this var
+
+
+        _this.state = { check: _this.props.checked == "true" && props.done,
+            value: _this.props.name };
+        return _this;
     }
 
     _createClass(Todo, [{
@@ -27,8 +34,8 @@ var Todo = function (_React$Component) {
                 React.createElement(
                     "span",
                     null,
-                    React.createElement("input", { type: "checkbox", checked: "{checked}" }),
-                    React.createElement("input", { type: "text", value: text })
+                    React.createElement("input", { type: "checkbox", checked: this.state.check }),
+                    React.createElement("input", { type: "text", value: this.state.value })
                 )
             );
         }
@@ -39,4 +46,4 @@ var Todo = function (_React$Component) {
 
 var root = document.getElementById('root');
 // Todo is is an instance of class Todo
-ReactDOM.render(React.createElement(Todo, { name: "Nikhil", checked: "true" }), root);
+ReactDOM.render(React.createElement(Todo, { name: "Nikhil Chikorde", checked: "false" }), root);
