@@ -17,12 +17,23 @@ var Todo = function (_React$Component) {
         // super is important otherwise you cannot use this var
 
 
-        _this.state = { check: _this.props.checked == "true" && props.done,
+        _this.state = { check: _this.props.checked == "true" && props.checked,
             value: _this.props.name };
+        _this.handleClick = _this.handleClick.bind(_this);
         return _this;
     }
 
     _createClass(Todo, [{
+        key: "handleClick",
+        value: function handleClick() {
+            console.log("I am clicked");
+            this.setState(function (state) {
+                return {
+                    check: !state.check
+                };
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             var text = this.props.name;
@@ -34,7 +45,7 @@ var Todo = function (_React$Component) {
                 React.createElement(
                     "span",
                     null,
-                    React.createElement("input", { type: "checkbox", checked: this.state.check }),
+                    React.createElement("input", { type: "checkbox", checked: this.state.check, onClick: this.handleClick }),
                     React.createElement("input", { type: "text", value: this.state.value })
                 )
             );
