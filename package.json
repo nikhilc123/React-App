@@ -12,5 +12,14 @@
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikhilc123/React-App.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nikhilc123/React-App/issues"
+  },
+  "homepage": "https://github.com/nikhilc123/React-App#readme"
 }

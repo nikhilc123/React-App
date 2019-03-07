@@ -1,24 +1,32 @@
-class Todo extends React.Component{
-    constructor(props) {
-        // super is important otherwise you cannot use this var
+class Todo extends React.Component {
+    constructor(props){
         super(props);
-        // or conditon to check if its string true or regular true
-        this.state = {check: (this.props.checked == "true" && props.checked),
-                      value: this.props.name};
 
+        this.state = { done: props.done,
+            text: props.text
+        };
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleClick(event){
-        console.log("I am clicked");
+    handleClick(event) {
+        this.setState(
+            state => ({
+                done: !state.done
+            }),
+            function(event){
+                this.handleSubmit(event)
+            }
+        );
+    }
+
+    handleChange(event){
+        let text = event.target.value;
+
         this.setState(state => ({
-            check: !state.check
-        }),
-        function(event){
-        this.handleSubmit(event)
-        });
+            text: text
+        }));
     }
 
     // Two ways to invoke this function:
@@ -28,34 +36,64 @@ class Todo extends React.Component{
         console.log("Submitted succesfully");
     }
 
-    handleChange(event){
-        let name = event.target.value;
-
-        this.setState(state => ({
-            value: name
-        }));
-    }
 
     render(){
-        let text = this.props.name;
-        let checked = (this.props.checked == true);
-        // class is reserved keyword on line 1 so in react we use className
+
         return <div className="todo">
             <span>
-                <input type="checkbox" checked={this.state.check}
-                       onClick={this.handleClick}
-                />
-
-                <input type="text" value={this.state.value}
-                       onChange={this.handleChange}
-                       onBlur={this.handleSubmit}/>
+              <input type="checkbox" checked={this.state.done}
+                     onClick={this.handleClick} />
+              <input type="text" value={this.state.text}
+                     onChange={this.handleChange}
+                     onBlur={this.handleSubmit} />
             </span>
         </div>;
     }
 }
 
-const root = document.getElementById('root');
-// Todo is is an instance of class Todo
+class TodoList extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            todos: [
+                {_id: 1, text: "Item 1", done: false},
+                {_id: 2, text: "Item 2", done: false},
+                {_id: 3, text: "Item 3", done: true},
+                {_id: 4, text: "Item 4", done: false}
+            ]
+        };
+
+        this.newTodo = this.newTodo.bind(this);
+    }
+
+    newTodo(event){
+        // by default the event is not triggered
+        event.preventDefault();
+        // todos is called inside constructor
+        todos = this.state.todos;
+        todos.push({_id: ""});
+
+        this.setState(state => ({
+            // pass the values to todos to create a new todo with empty id
+            todos: todos
+        }));
+    }
+
+    render() {
+        const values = this.state.todos.map((todo) =>
+            <Todo key={todo._id.toString()} text={todo.text} done={todo.done}/>
+        );
+
+        return <React.Fragment>
+            <h1>React Todo App</h1>
+            {values}
+            <a href='#' onClick={this.newTodo}>Create a new TODO</a>
+        </React.Fragment>
+    }
+}
+
 ReactDOM.render(
-    <Todo name = "Nikhil Chikorde" checked = "false" />,
-    root);
+    <TodoList />,
+    document.getElementById('root')
+);
