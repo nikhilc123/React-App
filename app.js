@@ -19,17 +19,43 @@ var Todo = function (_React$Component) {
 
         _this.state = { check: _this.props.checked == "true" && props.checked,
             value: _this.props.name };
+
         _this.handleClick = _this.handleClick.bind(_this);
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
     _createClass(Todo, [{
         key: "handleClick",
-        value: function handleClick() {
+        value: function handleClick(event) {
             console.log("I am clicked");
             this.setState(function (state) {
                 return {
                     check: !state.check
+                };
+            }, function (event) {
+                this.handleSubmit(event);
+            });
+        }
+
+        // Two ways to invoke this function:
+        // 1. directly call inside render
+        // 2. call inside another function - check handleClick function
+
+    }, {
+        key: "handleSubmit",
+        value: function handleSubmit(event) {
+            console.log("Submitted succesfully");
+        }
+    }, {
+        key: "handleChange",
+        value: function handleChange(event) {
+            var name = event.target.value;
+
+            this.setState(function (state) {
+                return {
+                    value: name
                 };
             });
         }
@@ -45,8 +71,12 @@ var Todo = function (_React$Component) {
                 React.createElement(
                     "span",
                     null,
-                    React.createElement("input", { type: "checkbox", checked: this.state.check, onClick: this.handleClick }),
-                    React.createElement("input", { type: "text", value: this.state.value })
+                    React.createElement("input", { type: "checkbox", checked: this.state.check,
+                        onClick: this.handleClick
+                    }),
+                    React.createElement("input", { type: "text", value: this.state.value,
+                        onChange: this.handleChange,
+                        onBlur: this.handleSubmit })
                 )
             );
         }

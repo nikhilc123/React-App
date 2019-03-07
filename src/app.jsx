@@ -5,15 +5,35 @@ class Todo extends React.Component{
         // or conditon to check if its string true or regular true
         this.state = {check: (this.props.checked == "true" && props.checked),
                       value: this.props.name};
+
         this.handleClick = this.handleClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleClick(){
+    handleClick(event){
         console.log("I am clicked");
         this.setState(state => ({
             check: !state.check
-            })
-        )
+        }),
+        function(event){
+        this.handleSubmit(event)
+        });
+    }
+
+    // Two ways to invoke this function:
+    // 1. directly call inside render
+    // 2. call inside another function - check handleClick function
+    handleSubmit(event){
+        console.log("Submitted succesfully");
+    }
+
+    handleChange(event){
+        let name = event.target.value;
+
+        this.setState(state => ({
+            value: name
+        }));
     }
 
     render(){
@@ -22,8 +42,13 @@ class Todo extends React.Component{
         // class is reserved keyword on line 1 so in react we use className
         return <div className="todo">
             <span>
-                <input type="checkbox" checked={this.state.check} onClick={this.handleClick} />
-                <input type="text" value={this.state.value} />
+                <input type="checkbox" checked={this.state.check}
+                       onClick={this.handleClick}
+                />
+
+                <input type="text" value={this.state.value}
+                       onChange={this.handleChange}
+                       onBlur={this.handleSubmit}/>
             </span>
         </div>;
     }
